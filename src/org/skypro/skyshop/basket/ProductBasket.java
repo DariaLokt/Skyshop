@@ -31,9 +31,7 @@ public class ProductBasket {
     public int countPrice() {
         int sum = 0;
         for (int i = 0; i < basket.length; i++) {
-            if (basket[i] == null) {
-                break;
-            } else {
+            if (basket[i] != null) {
                 sum += basket[i].getPrice();
             }
         }
@@ -41,28 +39,24 @@ public class ProductBasket {
     }
 
     public void printBasket() {
-        if (size != 0) {
-            System.out.println("------------------------");
-            for (int i = 0; i < basket.length; i++) {
-                if (basket[i] == null) {
-                    break;
-                } else {
-                    System.out.println(basket[i]);
-                }
-            }
-            System.out.println("Итого: " + countPrice());
-            System.out.println("------------------------");
-        } else {
+        if (size == 0) {
             System.out.println("в корзине пусто");
+            return;
         }
+        System.out.println("------------------------");
+        for (int i = 0; i < basket.length; i++) {
+            if (basket[i] != null) {
+                System.out.println(basket[i]);
+            }
+        }
+        System.out.println("Итого: " + countPrice());
+        System.out.println("------------------------");
     }
 
     public boolean isInBasket(String name) {
         boolean isIt = false;
         for (int i = 0; i < basket.length; i++) {
-            if (basket[i] == null) {
-                break;
-            } else if (basket[i].getName().equals(name)) {
+            if (basket[i] != null && basket[i].getName().equals(name)) {
                 isIt = true;
                 break;
             }
