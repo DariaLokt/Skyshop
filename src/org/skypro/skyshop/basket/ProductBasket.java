@@ -28,8 +28,8 @@ public class ProductBasket {
         }
     }
 
-    public int countPrice() {
-        int sum = 0;
+    public float countPrice() {
+        float sum = 0f;
         for (int i = 0; i < basket.length; i++) {
             if (basket[i] != null) {
                 sum += basket[i].getPrice();
@@ -50,7 +50,18 @@ public class ProductBasket {
             }
         }
         System.out.println("Итого: " + countPrice());
+        System.out.println("Специальных товаров: " + countSpecials());
         System.out.println("------------------------");
+    }
+
+    private int countSpecials() {
+        int special = 0;
+        for (int i = 0; i < basket.length; i++) {
+            if (basket[i] != null && basket[i].isSpecial()) {
+                special++;
+            }
+        }
+        return special;
     }
 
     public boolean isInBasket(String name) {
