@@ -1,9 +1,7 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.DiscountedProduct;
-import org.skypro.skyshop.product.FixPriceProduct;
-import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.product.*;
 
 public class App {
     public static void main(String[] args) {
@@ -68,6 +66,27 @@ public class App {
         System.out.println(basket2.isInBasket("Pencil"));
         printSearchResult(basket2.isInBasket("Pencil"));
         printDivider();
+
+        System.out.println("Тестирование SearchEngine");
+        Article tables = new Article("Table", "Tables are funny.");
+        Article redTables = new Article("Red Tables", "Red tables are even funnier.");
+        Article lamps = new Article("Lamp", "LLLaaammmppp!");
+        SearchEngine searchEngine = new SearchEngine(100);
+        searchEngine.add(book);
+        searchEngine.add(table);
+        searchEngine.add(toy);
+        searchEngine.add(lamp);
+        searchEngine.add(phone);
+        searchEngine.add(pencil);
+        searchEngine.add(tables);
+        searchEngine.add(redTables);
+        searchEngine.add(lamps);
+        Searchable [] searchResults = searchEngine.search("Book");
+        printResults(searchResults);
+        Searchable [] searchResults2 = searchEngine.search("Lamp");
+        printResults(searchResults2);
+        Searchable [] searchResults3 = searchEngine.search("Table");
+        printResults(searchResults3);
     }
 
     public static void printDivider() {
@@ -79,6 +98,14 @@ public class App {
             System.out.println("Такой товар есть");
         } else {
             System.out.println("Такого товара нет");
+        }
+    }
+
+    public static void printResults(Searchable [] searchResults) {
+        for (Searchable result : searchResults) {
+            if (result != null) {
+                result.getStringRepresentation();
+            }
         }
     }
 }
