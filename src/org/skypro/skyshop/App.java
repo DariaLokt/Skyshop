@@ -1,16 +1,18 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
+import org.skypro.skyshop.product.SimpleProduct;
 
 public class App {
     public static void main(String[] args) {
-        Product lamp = new Product("Lamp", 1000);
-        Product table = new Product("Table", 15000);
-        Product book = new Product("Book", 500);
-        Product phone = new Product("Phone", 20000);
-        Product pencil = new Product("Pencil", 25);
-        Product toy = new Product("Toy", 800);
+        SimpleProduct lamp = new SimpleProduct("Lamp", 1000);
+        DiscountedProduct table = new DiscountedProduct("Table", 15000, 10);
+        DiscountedProduct book = new DiscountedProduct("Book", 50, 1);
+        SimpleProduct phone = new SimpleProduct("Phone", 20000);
+        FixPriceProduct pencil = new FixPriceProduct("Pencil");
+        SimpleProduct toy = new SimpleProduct("Toy", 800);
 
         ProductBasket basket1 = new ProductBasket();
         ProductBasket basket2 = new ProductBasket();
@@ -35,7 +37,7 @@ public class App {
         printDivider();
 
         System.out.println("Получение стоимости корзины с несколькими товарами\n");
-        int price = basket2.countPrice();
+        float price = basket2.countPrice();
         System.out.println("Стоимость корзины: " + price);
         printDivider();
 
