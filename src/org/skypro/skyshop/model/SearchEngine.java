@@ -1,6 +1,4 @@
-package org.skypro.skyshop.product;
-
-import java.util.Arrays;
+package org.skypro.skyshop.model;
 
 public class SearchEngine {
      Searchable[] Searchable;

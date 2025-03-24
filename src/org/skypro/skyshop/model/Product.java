@@ -1,7 +1,7 @@
-package org.skypro.skyshop.product;
+package org.skypro.skyshop.model;
 
 public abstract class Product implements Searchable {
-    private String name;
+    private final String name;
 
     public Product(String name) {
         this.name = name;
