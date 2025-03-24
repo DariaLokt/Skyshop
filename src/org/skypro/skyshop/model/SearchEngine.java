@@ -11,7 +11,6 @@ public class SearchEngine {
 
     public Searchable[] search(String searchTerm) {
         Searchable[] results = new Searchable[5];
-//        Searchable blank = new Article("-", "-");
         int count = 0;
         for (int i = 0; i < Searchable.length; i++) {
             if (Searchable[i] != null && Searchable[i].getSearchTerm().contains(searchTerm) && count < 5) {
@@ -19,6 +18,7 @@ public class SearchEngine {
                 count++;
             }
         }
+//        Searchable blank = new Article("-", "-");
 //        if (count < 5) {
 //            while (count != 5) {
 //                results[count] = blank;
