@@ -1,6 +1,6 @@
 package org.skypro.skyshop.basket;
 
-import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.model.Product;
 
 import java.util.Arrays;
 

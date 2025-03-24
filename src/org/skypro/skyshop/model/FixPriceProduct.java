@@ -1,4 +1,4 @@
-package org.skypro.skyshop.product;
+package org.skypro.skyshop.model;
 
 public class FixPriceProduct extends Product {
     private static float PRICE = 250;

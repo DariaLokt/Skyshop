@@ -1,4 +1,4 @@
-package org.skypro.skyshop.product;
+package org.skypro.skyshop.model;
 
 public class DiscountedProduct extends Product {
     private float price;
