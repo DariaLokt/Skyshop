@@ -1,6 +1,7 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.model.*;
 
 public class App {
@@ -69,7 +70,7 @@ public class App {
 
         System.out.println("Тестирование SearchEngine");
         Article tables = new Article("Table", "Tables are funny.");
-        Article redTables = new Article("Red Tables", "Red tables are even funnier.");
+        Article redTables = new Article("Red Tables Table Table", "Red tables are even funnier.");
         Article lamps = new Article("Lamp", "LLLaaammmppp!");
         SearchEngine searchEngine = new SearchEngine(100);
         searchEngine.add(book);
@@ -87,6 +88,40 @@ public class App {
         printResults(searchResults2);
         Searchable [] searchResults3 = searchEngine.search("Table");
         printResults(searchResults3);
+        printDivider();
+
+        System.out.println("Демонстрация проверки данных");
+        try {
+            SimpleProduct space = new SimpleProduct("", 10);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Название не может быть пустым");
+        }
+        try {
+            SimpleProduct negative = new SimpleProduct("Negative", -1);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Цена не должна быть отрицательной");
+        }
+        try {
+            DiscountedProduct extra = new DiscountedProduct("Extra", 100, 110);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Проценты должны быть от 0 до 100");
+        }
+        printDivider();
+
+        System.out.println("Демонстрация нового метода поиска");
+        Searchable searchMostRepetitions = null;
+        try {
+            searchMostRepetitions = searchEngine.searchBestResult("Table");
+        } catch (BestResultNotFound e) {
+            System.out.println("Для запроса не нашлось подходящей статьи");
+        }
+        searchMostRepetitions.getStringRepresentation();
+        Searchable searchMostRepetitions2 = null;
+        try {
+            searchMostRepetitions2 = searchEngine.searchBestResult("yogurt");
+        } catch (BestResultNotFound e) {
+            System.out.println("Для запроса не нашлось подходящей статьи");
+        }
     }
 
     public static void printDivider() {

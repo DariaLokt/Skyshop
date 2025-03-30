@@ -4,8 +4,19 @@ public abstract class Product implements Searchable {
     private final String name;
 
     public Product(String name) {
+        checkName(name);
         this.name = name;
     }
+
+    private static void checkName(String name) throws IllegalArgumentException {
+        if (name == null) {
+            throw new IllegalArgumentException("Нет названия");
+        }
+        if (name.isBlank()) {
+            throw new IllegalArgumentException("Название не может быть пустым");
+        }
+    }
+
 
     public String getName() {
         return name;
