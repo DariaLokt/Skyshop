@@ -2,37 +2,32 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.model.Product;
 
-import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProductBasket {
-    private Product[] basket;
+    private final List<Product> basket;
     private int size;
 
     public ProductBasket() {
-        this.basket = new Product[5];
+        this.basket = new LinkedList<>();
         this.size = 0;
     }
 
     public void addProduct(Product product) {
-        if (size >= 5) {
-            System.out.println("Невозможно добавить продукт");
-            return;
-        }
-        for (int i = 0; i < basket.length; i++) {
-            if (basket[i] == null) {
-                basket[i] = product;
-                size++;
-                System.out.println("Товар " + product.getName() + " добавлен");
-                break;
-            }
-        }
+        basket.add(product);
+        size++;
+        System.out.println("Товар " + product.getName() + " добавлен");
     }
 
     public float countPrice() {
         float sum = 0f;
-        for (int i = 0; i < basket.length; i++) {
-            if (basket[i] != null) {
-                sum += basket[i].getPrice();
+        Iterator<Product> iterator = basket.iterator();
+        while (iterator.hasNext()) {
+            Product element = iterator.next();
+            if (element != null) {
+                sum += element.getPrice();
             }
         }
         return sum;
@@ -44,9 +39,11 @@ public class ProductBasket {
             return;
         }
         System.out.println("------------------------");
-        for (int i = 0; i < basket.length; i++) {
-            if (basket[i] != null) {
-                System.out.println(basket[i]);
+        Iterator<Product> iterator = basket.iterator();
+        while (iterator.hasNext()) {
+            Product element = iterator.next();
+            if (element != null) {
+                System.out.println(element);
             }
         }
         System.out.println("Итого: " + countPrice());
@@ -56,8 +53,10 @@ public class ProductBasket {
 
     private int countSpecials() {
         int special = 0;
-        for (int i = 0; i < basket.length; i++) {
-            if (basket[i] != null && basket[i].isSpecial()) {
+        Iterator<Product> iterator = basket.iterator();
+        while (iterator.hasNext()) {
+            Product element = iterator.next();
+            if (element != null && element.isSpecial()) {
                 special++;
             }
         }
@@ -66,8 +65,10 @@ public class ProductBasket {
 
     public boolean isInBasket(String name) {
         boolean isIt = false;
-        for (int i = 0; i < basket.length; i++) {
-            if (basket[i] != null && basket[i].getName().equals(name)) {
+        Iterator<Product> iterator = basket.iterator();
+        while (iterator.hasNext()) {
+            Product element = iterator.next();
+            if (element != null && element.getName().equals(name)) {
                 isIt = true;
                 break;
             }
@@ -76,8 +77,21 @@ public class ProductBasket {
     }
 
     public void emptyBasket() {
-        Arrays.fill(basket, null);
+        basket.clear();
         size = 0;
         System.out.println("Очистка корзины завершена");
+    }
+
+    public List<Product> deleteProduct(String name) {
+        List<Product> deletedProducts = new LinkedList<>();
+        Iterator<Product> iterator = basket.iterator();
+        while (iterator.hasNext()) {
+            Product element = iterator.next();
+            if (element.getName().equals(name)) {
+                deletedProducts.add(element);
+                basket.remove(element);
+            }
+        }
+        return deletedProducts;
     }
 }
