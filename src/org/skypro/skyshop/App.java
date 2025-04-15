@@ -4,6 +4,9 @@ import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.model.*;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
         SimpleProduct lamp = new SimpleProduct("Lamp", 1000);
@@ -22,7 +25,6 @@ public class App {
         basket1.printBasket();
         printDivider();
 
-        System.out.println("Добавление продукта в заполненную корзину, в которой нет свободного места\n");
         basket2.addProduct(table);
         basket2.addProduct(book);
         basket2.addProduct(phone);
@@ -72,7 +74,7 @@ public class App {
         Article tables = new Article("Table", "Tables are funny.");
         Article redTables = new Article("Red Tables Table Table", "Red tables are even funnier.");
         Article lamps = new Article("Lamp", "LLLaaammmppp!");
-        SearchEngine searchEngine = new SearchEngine(100);
+        SearchEngine searchEngine = new SearchEngine();
         searchEngine.add(book);
         searchEngine.add(table);
         searchEngine.add(toy);
@@ -82,12 +84,12 @@ public class App {
         searchEngine.add(tables);
         searchEngine.add(redTables);
         searchEngine.add(lamps);
-        Searchable [] searchResults = searchEngine.search("Book");
-        printResults(searchResults);
-        Searchable [] searchResults2 = searchEngine.search("Lamp");
-        printResults(searchResults2);
-        Searchable [] searchResults3 = searchEngine.search("Table");
-        printResults(searchResults3);
+        List<Searchable> searchResults = searchEngine.search("Book");
+        printSearchEngineResults(searchResults);
+        List<Searchable> searchResults2 = searchEngine.search("Lamp");
+        printSearchEngineResults(searchResults2);
+        List<Searchable> searchResults3 = searchEngine.search("Table");
+        printSearchEngineResults(searchResults3);
         printDivider();
 
         System.out.println("Демонстрация проверки данных");
@@ -109,19 +111,36 @@ public class App {
         printDivider();
 
         System.out.println("Демонстрация нового метода поиска");
-        Searchable searchMostRepetitions = null;
+        Searchable searchMostRepetitions;
         try {
             searchMostRepetitions = searchEngine.searchBestResult("Table");
+            searchMostRepetitions.getStringRepresentation();
         } catch (BestResultNotFound e) {
             System.out.println("Для запроса не нашлось подходящей статьи");
         }
-        searchMostRepetitions.getStringRepresentation();
-        Searchable searchMostRepetitions2 = null;
+        Searchable searchMostRepetitions2;
         try {
             searchMostRepetitions2 = searchEngine.searchBestResult("yogurt");
         } catch (BestResultNotFound e) {
             System.out.println("Для запроса не нашлось подходящей статьи");
         }
+        printDivider();
+
+        System.out.println("Добавление метода удаления продукта по имени из корзины");
+        List<Product> trash;
+        basket2.addProduct(table);
+        basket2.addProduct(book);
+        basket2.addProduct(phone);
+        basket2.addProduct(pencil);
+        basket2.addProduct(toy);
+        basket2.addProduct(lamp);
+        trash = basket2.deleteProduct("Lamp");
+        printTrashList(trash);
+        basket2.printBasket();
+        trash = basket2.deleteProduct("Dog");
+        printTrashList(trash);
+        basket2.printBasket();
+        printDivider();
     }
 
     public static void printDivider() {
@@ -136,11 +155,31 @@ public class App {
         }
     }
 
-    public static void printResults(Searchable [] searchResults) {
-        for (Searchable result : searchResults) {
-            if (result != null) {
-                result.getStringRepresentation();
+    public static void printTrashList (List<Product> trash) {
+        Iterator<Product> iterator = trash.iterator();
+        if (!iterator.hasNext()) {
+            System.out.println("Ничего не было удалено");
+        } else {
+            System.out.println("----------------");
+            System.out.println("Удалили:");
+            while (iterator.hasNext()) {
+                Product element = iterator.next();
+                System.out.println(element);
             }
+            System.out.println("----------------");
         }
+    }
+
+    public static void printListResults(List<Searchable> result) {
+        Iterator<Searchable> iterator = result.iterator();
+        while (iterator.hasNext()) {
+            Searchable element = iterator.next();
+            System.out.println(element);
+        }
+    }
+    public static void printSearchEngineResults(List<Searchable> result) {
+        System.out.println("Результат поиска:");
+        printListResults(result);
+        System.out.println("-------------");
     }
 }
