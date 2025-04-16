@@ -6,6 +6,7 @@ import org.skypro.skyshop.model.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -71,9 +72,9 @@ public class App {
         printDivider();
 
         System.out.println("Тестирование SearchEngine");
-        Article tables = new Article("Table", "Tables are funny.");
+        Article tables = new Article("Tablee", "Tables are funny.");
         Article redTables = new Article("Red Tables Table Table", "Red tables are even funnier.");
-        Article lamps = new Article("Lamp", "LLLaaammmppp!");
+        Article lamps = new Article("Lamppp", "LLLaaammmppp!");
         SearchEngine searchEngine = new SearchEngine();
         searchEngine.add(book);
         searchEngine.add(table);
@@ -84,11 +85,11 @@ public class App {
         searchEngine.add(tables);
         searchEngine.add(redTables);
         searchEngine.add(lamps);
-        List<Searchable> searchResults = searchEngine.search("Book");
+        Map<String,Searchable> searchResults = searchEngine.search("Book");
         printSearchEngineResults(searchResults);
-        List<Searchable> searchResults2 = searchEngine.search("Lamp");
+        Map<String,Searchable> searchResults2 = searchEngine.search("Lamp");
         printSearchEngineResults(searchResults2);
-        List<Searchable> searchResults3 = searchEngine.search("Table");
+        Map<String,Searchable> searchResults3 = searchEngine.search("Table");
         printSearchEngineResults(searchResults3);
         printDivider();
 
@@ -127,7 +128,7 @@ public class App {
         printDivider();
 
         System.out.println("Добавление метода удаления продукта по имени из корзины");
-        List<Product> trash;
+        Map<String, List<Product>> trash;
         basket2.addProduct(table);
         basket2.addProduct(book);
         basket2.addProduct(phone);
@@ -155,11 +156,14 @@ public class App {
         }
     }
 
-    public static void printTrashList (List<Product> trash) {
-        Iterator<Product> iterator = trash.iterator();
-        if (!iterator.hasNext()) {
+    public static void printTrashList (Map<String,List<Product>> trash) {
+        if (trash.isEmpty()) {
             System.out.println("Ничего не было удалено");
-        } else {
+            return;
+        }
+        for (Map.Entry<String, List<Product>> products : trash.entrySet()) {
+            List<Product> productList = products.getValue();
+            Iterator<Product> iterator = productList.iterator();
             System.out.println("----------------");
             System.out.println("Удалили:");
             while (iterator.hasNext()) {
@@ -177,9 +181,13 @@ public class App {
             System.out.println(element);
         }
     }
-    public static void printSearchEngineResults(List<Searchable> result) {
+    public static void printSearchEngineResults(Map<String,Searchable> result) {
         System.out.println("Результат поиска:");
-        printListResults(result);
+        int count = 1;
+        for (Map.Entry<String, Searchable> results : result.entrySet()) {
+            System.out.println(count + ". " + results.getKey() + "\n" + results.getValue());
+            count++;
+        }
         System.out.println("-------------");
     }
 }
