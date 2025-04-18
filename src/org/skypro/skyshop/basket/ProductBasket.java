@@ -27,6 +27,9 @@ public class ProductBasket {
             System.out.println("Это не первый товар с таким названием в корзине");
         }
     }
+    public void addProduct(Map<String,List<Product>> productSet) {
+        basket.putAll(productSet);
+    }
 
     public float countPrice() {
         float sum = 0f;
@@ -43,12 +46,7 @@ public class ProductBasket {
         return sum;
     }
 
-    public void printBasket() {
-        if (size == 0) {
-            System.out.println("в корзине пусто");
-            return;
-        }
-        System.out.println("------------------------");
+    public void printProducts() {
         for (Map.Entry<String, List<Product>> products : basket.entrySet()) {
             List<Product> productList = products.getValue();
             Iterator<Product> iterator = productList.iterator();
@@ -59,6 +57,15 @@ public class ProductBasket {
                 }
             }
         }
+    }
+
+    public void printBasket() {
+        if (size == 0) {
+            System.out.println("в корзине пусто");
+            return;
+        }
+        System.out.println("------------------------");
+        printProducts();
         System.out.println("Итого: " + countPrice());
         System.out.println("Специальных товаров: " + countSpecials());
         System.out.println("------------------------");
@@ -103,18 +110,9 @@ public class ProductBasket {
 
     public Map<String, List<Product>> deleteProduct(String name) {
         Map<String, List<Product>> deletedProducts = new LinkedHashMap<>();
-        List<Product> deleted = new LinkedList<>();
-        for (Map.Entry<String, List<Product>> products : basket.entrySet()) {
-            List<Product> productList = products.getValue();
-            Iterator<Product> iterator = productList.iterator();
-            while (iterator.hasNext()) {
-                Product element = iterator.next();
-                if (element.getName().equals(name)) {
-                    deleted.add(element);
-                    deletedProducts.put(element.getName(),deleted);
-                    basket.remove(element.getName());
-                }
-            }
+        if (basket.containsKey(name)) {
+            deletedProducts.put(name,basket.get(name));
+            basket.remove(name);
         }
         return deletedProducts;
     }

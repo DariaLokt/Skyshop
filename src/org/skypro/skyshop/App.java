@@ -4,7 +4,6 @@ import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.model.*;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -159,28 +158,15 @@ public class App {
     public static void printTrashList (Map<String,List<Product>> trash) {
         if (trash.isEmpty()) {
             System.out.println("Ничего не было удалено");
-            return;
-        }
-        for (Map.Entry<String, List<Product>> products : trash.entrySet()) {
-            List<Product> productList = products.getValue();
-            Iterator<Product> iterator = productList.iterator();
+        } else {
+            ProductBasket trashBin = new ProductBasket();
+            trashBin.addProduct(trash);
             System.out.println("----------------");
             System.out.println("Удалили:");
-            while (iterator.hasNext()) {
-                Product element = iterator.next();
-                System.out.println(element);
-            }
-            System.out.println("----------------");
+            trashBin.printProducts();
         }
     }
 
-    public static void printListResults(List<Searchable> result) {
-        Iterator<Searchable> iterator = result.iterator();
-        while (iterator.hasNext()) {
-            Searchable element = iterator.next();
-            System.out.println(element);
-        }
-    }
     public static void printSearchEngineResults(Map<String,Searchable> result) {
         System.out.println("Результат поиска:");
         int count = 1;
