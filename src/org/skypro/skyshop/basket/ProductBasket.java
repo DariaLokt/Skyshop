@@ -18,7 +18,6 @@ public class ProductBasket {
             List<Product> newList = new LinkedList<Product>();
             newList.add(product);
             basket.put(product.getName(), newList);
-            size++;
             System.out.println("Товар " + product.getName() + " добавлен");
             System.out.println("Это первый товар с таким названием в корзине");
         } else {
@@ -26,6 +25,7 @@ public class ProductBasket {
             System.out.println("Товар " + product.getName() + " добавлен");
             System.out.println("Это не первый товар с таким названием в корзине");
         }
+        size++;
     }
     public void addProduct(Map<String,List<Product>> productSet) {
         basket.putAll(productSet);
@@ -61,7 +61,7 @@ public class ProductBasket {
 
     public void printBasket() {
         if (size == 0) {
-            System.out.println("в корзине пусто");
+            System.out.println("В корзине пусто");
             return;
         }
         System.out.println("------------------------");
@@ -87,19 +87,7 @@ public class ProductBasket {
     }
 
     public boolean isInBasket(String name) {
-        boolean isIt = false;
-        for (Map.Entry<String, List<Product>> products : basket.entrySet()) {
-            List<Product> productList = products.getValue();
-            Iterator<Product> iterator = productList.iterator();
-            while (iterator.hasNext()) {
-                Product element = iterator.next();
-                if (element != null && element.getName().equals(name)) {
-                    isIt = true;
-                    break;
-                }
-            }
-        }
-        return isIt;
+        return basket.containsKey(name);
     }
 
     public void emptyBasket() {
@@ -113,6 +101,7 @@ public class ProductBasket {
         if (basket.containsKey(name)) {
             deletedProducts.put(name,basket.get(name));
             basket.remove(name);
+            size--;
         }
         return deletedProducts;
     }
