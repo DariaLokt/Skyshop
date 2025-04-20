@@ -5,22 +5,34 @@ import org.skypro.skyshop.exceptions.BestResultNotFound;
 import java.util.*;
 
 public class SearchEngine {
-     List<Searchable> Searchable;
+     HashSet<Searchable> Searchable;
 
     public SearchEngine() {
-        Searchable = new LinkedList<Searchable>();
+        Searchable = new HashSet<>();
     }
 
-    public Map<String,Searchable> search(String searchTerm) {
-        Map<String,Searchable> results = new TreeMap<>();
+    public Set<Searchable> search(String searchTerm) {
+        Set<Searchable> results = new TreeSet<Searchable>(new LengthSearchableComparator());
         Iterator<Searchable> iterator = Searchable.iterator();
         while (iterator.hasNext()) {
             Searchable element = iterator.next();
             if (element != null && element.getSearchTerm().contains(searchTerm)) {
-                results.put(element.getSearchTerm(),element);
+                results.add(element);
             }
         }
         return results;
+    }
+
+    public static class LengthSearchableComparator implements Comparator<Searchable> {
+        @Override
+        public int compare(org.skypro.skyshop.model.Searchable o1, org.skypro.skyshop.model.Searchable o2) {
+            int a = Integer.compare(o1.getSearchTerm().length(),o2.getSearchTerm().length());
+            if (a == 0) {
+                return o1.getSearchTerm().compareTo(o2.getSearchTerm());
+            } else {
+                return a;
+            }
+        }
     }
 
     public void add(Searchable newItem) {
