@@ -32,31 +32,17 @@ public class ProductBasket {
     }
 
     public float countPrice() {
-        float sum = 0f;
-        for (Map.Entry<String, List<Product>> products : basket.entrySet()) {
-            List<Product> productList = products.getValue();
-            Iterator<Product> iterator = productList.iterator();
-            while (iterator.hasNext()) {
-                Product element = iterator.next();
-                if (element != null) {
-                    sum += element.getPrice();
-                }
-            }
-        }
-        return sum;
+        int sum = basket.values().stream().flatMap(Collection::stream)
+                .filter(Objects::nonNull)
+                .mapToInt(obj -> (int)obj.getPrice())
+                .sum();
+        return (float) sum;
     }
 
     public void printProducts() {
-        for (Map.Entry<String, List<Product>> products : basket.entrySet()) {
-            List<Product> productList = products.getValue();
-            Iterator<Product> iterator = productList.iterator();
-            while (iterator.hasNext()) {
-                Product element = iterator.next();
-                if (element != null) {
-                    System.out.println(element);
-                }
-            }
-        }
+        basket.values().stream().flatMap(Collection::stream)
+                .filter(Objects::nonNull)
+                .forEach(System.out::println);
     }
 
     public void printBasket() {
@@ -72,18 +58,10 @@ public class ProductBasket {
     }
 
     private int countSpecials() {
-        int special = 0;
-        for (Map.Entry<String, List<Product>> products : basket.entrySet()) {
-            List<Product> productList = products.getValue();
-            Iterator<Product> iterator = productList.iterator();
-            while (iterator.hasNext()) {
-                Product element = iterator.next();
-                if (element != null && element.isSpecial()) {
-                    special++;
-                }
-            }
-        }
-        return special;
+        return (int) basket.values().stream().flatMap(Collection::stream)
+                .filter(Objects::nonNull)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public boolean isInBasket(String name) {
