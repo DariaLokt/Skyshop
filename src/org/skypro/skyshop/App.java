@@ -4,8 +4,10 @@ import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.model.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
@@ -74,6 +76,7 @@ public class App {
         Article tables = new Article("Tablee", "Tables are funny.");
         Article redTables = new Article("Red Tables Table Table", "Red tables are even funnier.");
         Article lamps = new Article("Lamppp", "LLLaaammmppp!");
+        Article tables2 = new Article("Tableb", "Tables are funny. Really.");
         SearchEngine searchEngine = new SearchEngine();
         searchEngine.add(book);
         searchEngine.add(table);
@@ -84,11 +87,12 @@ public class App {
         searchEngine.add(tables);
         searchEngine.add(redTables);
         searchEngine.add(lamps);
-        Map<String,Searchable> searchResults = searchEngine.search("Book");
+        searchEngine.add(tables2);
+        Set<Searchable> searchResults = searchEngine.search("Book");
         printSearchEngineResults(searchResults);
-        Map<String,Searchable> searchResults2 = searchEngine.search("Lamp");
+        Set<Searchable> searchResults2 = searchEngine.search("Lamp");
         printSearchEngineResults(searchResults2);
-        Map<String,Searchable> searchResults3 = searchEngine.search("Table");
+        Set<Searchable> searchResults3 = searchEngine.search("Table");
         printSearchEngineResults(searchResults3);
         printDivider();
 
@@ -167,11 +171,13 @@ public class App {
         }
     }
 
-    public static void printSearchEngineResults(Map<String,Searchable> result) {
-        System.out.println("Результат поиска:");
+    public static void printSearchEngineResults(Set<Searchable> result) {
+        System.out.println("Результаты поиска:");
         int count = 1;
-        for (Map.Entry<String, Searchable> results : result.entrySet()) {
-            System.out.println(count + ". " + results.getKey() + "\n" + results.getValue());
+        Iterator<Searchable> iterator = result.iterator();
+        while (iterator.hasNext()) {
+            Searchable element = iterator.next();
+            System.out.println(count + ". " + element);
             count++;
         }
         System.out.println("-------------");
